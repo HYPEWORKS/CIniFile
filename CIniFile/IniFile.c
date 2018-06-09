@@ -49,7 +49,8 @@ char* strndup(const char* s, size_t n)
 
 char* substring(const char* str, size_t begin, size_t len)
 {
-	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || strlen(str) < (begin + len))
+	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || 
+		strlen(str) < (begin + len))
 		return 0;
 
 	return strndup(str + begin, len);
@@ -111,7 +112,7 @@ IniItem* IniItem_Initialize()
 
 	if (!item)
 	{
-		__IniFile_SetErrorHint("Unable to allocate memory for IniItem.", 5);
+		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_MALLOC_FAIL, 5);
 	}
 
 	return item;
@@ -134,7 +135,7 @@ IniSection* IniSection_Initialize()
 
 	if (!section)
 	{
-		__IniFile_SetErrorHint("Unable to allocate memory for IniSection.", 6);
+		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_MALLOC_FAIL, 6);
 	}
 	
 	return section;
@@ -168,7 +169,7 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 	if (!fp)
 	{
-		__IniFile_SetErrorHint("Unable to open file for reading. Check errno to see what the root cause is.", errno);
+		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_FOPEN_FAIL, errno);
 
 		return NULL;
 	}
@@ -204,4 +205,20 @@ void IniFile_Free(IniFile* file)
 	}
 
 	free(section);
+}
+
+int __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section)
+{
+	return 0;
+}
+
+int __IniFile_IsLineCommented(const char* line)
+{
+	if (!line) return 0;
+
+	if (line[0] == DM_INI_COMMENT_1 || line[0] == DM_INI_COMMENT_2) return 1;
+
+	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_3) return 1;
+
+	return 0;
 }

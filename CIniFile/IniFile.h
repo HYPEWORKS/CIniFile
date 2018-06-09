@@ -18,16 +18,26 @@
 #ifndef DM_INI_FILE_H_
 #define DM_INI_FILE_H_
 
+// hashtag swag y'all
 #define DM_INI_COMMENT_1 '#'
+
+// you always have to keep track of these buggers.
 #define DM_INI_COMMENT_2 ';'
-#define DM_INI_COMMENT_3 "//"
+
+// //
+#define DM_INI_COMMENT_3 '/' // Makes "//"
+
+
 #define DM_INI_COMMENT_4A "/*"
 #define DM_INI_COMMENT_4B "*/"
+
+#define DM_INI_ERROR_MESSAGE_FOPEN_FAIL "Can't open file for reading. Please check errno"
+#define DM_INI_ERROR_MESSAGE_MALLOC_FAIL "Couldn't allocate memory! This is bad."
 
 /**
  * @brief A helping hand if/when you get errors.
  *
- * Structure that contains an error message to help the developer out.
+ * Structure that contains an error message to help out the developer.
  */
 typedef struct
 {
@@ -134,6 +144,10 @@ typedef struct
 IniFile* IniFile_ReadFile(const char* filename);
 
 void IniFile_Free(IniFile* file);
+
+int __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section);
+
+int __IniFile_IsLineCommented(const char* line);
 
 // TODO: Functions for section and implement the file structure and functions.
 

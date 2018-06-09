@@ -28,7 +28,7 @@
 #define BREAKPOINT() _asm { int 3 };
 #elif
 #include <signal.h>
-raise(SIGINT);
+#define BREAKPOINT() raise(SIGINT);
 #endif
 #elif
 #define BREAKPOINT()
@@ -86,11 +86,24 @@ int TestErrorHint()
 	ASSERT_EQUALS(hint->errorCode, -1);
 	ASSERT_STR_EQUALS("test", hint->errorText);
 
+	__IniFile_ClearErrorHint();
+	hint = IniFile_GetErrorHint();
+
+	ASSERT_NULL(hint);
+
 	return TEST_SUCCESS;
 }
 
 int TestFileRead()
 {
+	// A bit of a sanity check.
+	FILE* testFile = NULL;
+	testFile = fopen("test.ini", "r");
+
+	ASSERT_NOT_NULL(testFile);
+
+	fclose(testFile);
+
 	return TEST_SUCCESS;
 }
 
