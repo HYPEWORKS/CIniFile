@@ -15,8 +15,13 @@
  * Read LICENSE.TXT for the full license text.
  */
 
+#include <stdbool.h>
+
 #ifndef DM_INI_FILE_H_
 #define DM_INI_FILE_H_
+
+// Max buffer size for each line. Can be modified for the needs of the application.
+#define DM_INI_MAX_LINE_BUFFER 2048
 
 // hashtag swag y'all
 #define DM_INI_COMMENT_1 '#'
@@ -24,11 +29,13 @@
 // you always have to keep track of these buggers.
 #define DM_INI_COMMENT_2 ';'
 
-// //
-#define DM_INI_COMMENT_3 '/' // Makes "//"
+// One-half of "//"
+#define DM_INI_COMMENT_3 '/'
 
-
+// Beginning of a block
 #define DM_INI_COMMENT_4A "/*"
+
+// Ending of a block
 #define DM_INI_COMMENT_4B "*/"
 
 #define DM_INI_ERROR_MESSAGE_FOPEN_FAIL "Can't open file for reading. Please check errno"
@@ -145,9 +152,13 @@ IniFile* IniFile_ReadFile(const char* filename);
 
 void IniFile_Free(IniFile* file);
 
-int __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section);
+bool __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section);
 
-int __IniFile_IsLineCommented(const char* line);
+bool __IniFile_IsLineCommented(const char* line);
+
+bool __IniFile_IsBeginBlockComment(const char* line);
+
+bool __IniFile_IsEndBlockComment(const char* line);
 
 // TODO: Functions for section and implement the file structure and functions.
 

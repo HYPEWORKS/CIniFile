@@ -25,10 +25,14 @@
 
 #if _DEBUG
 #if _MSC_VER
-#define BREAKPOINT() _asm { int 3 };
+#include <intrin.h>
+#define BREAKPOINT() __debugbreak()
 #elif
 #include <signal.h>
 #define BREAKPOINT() raise(SIGINT);
+#else
+// TODO: Put your own stuff here for internal breakpoint handling.
+#define BREAKPOINT()
 #endif
 #elif
 #define BREAKPOINT()
@@ -65,9 +69,14 @@ int TestHashing()
 	const char* test2 = "Josh is really cool, and this is just some filler to create a very long string!";
 	long hashed2 = __IniFile_Hash(test2);
 
+	const char* test3 = "a";
+	long hashed3 = __IniFile_Hash(test3);
+
 	ASSERT_NOT_EQUALS(hashed1, 0);
 
 	ASSERT_NOT_EQUALS(hashed2, 0);
+
+	ASSERT_EQUALS(hashed3, 276);
 
 	return TEST_SUCCESS;
 }

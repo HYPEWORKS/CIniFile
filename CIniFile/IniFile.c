@@ -162,6 +162,7 @@ void IniSection_Free(IniSection* section)
 IniFile* IniFile_ReadFile(const char* filename)
 {
 	FILE* fp = NULL;
+	char* buffer;
 
 	__IniFile_ClearErrorHint();
 
@@ -171,7 +172,14 @@ IniFile* IniFile_ReadFile(const char* filename)
 	{
 		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_FOPEN_FAIL, errno);
 
+		fclose(fp);
+
 		return NULL;
+	}
+
+	while (fgets(buffer, DM_INI_MAX_LINE_BUFFER, fp))
+	{
+
 	}
 
 	fclose(fp);
@@ -207,18 +215,28 @@ void IniFile_Free(IniFile* file)
 	free(section);
 }
 
-int __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section)
+bool __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section)
 {
-	return 0;
+	return false;
 }
 
-int __IniFile_IsLineCommented(const char* line)
+bool __IniFile_IsLineCommented(const char* line)
 {
-	if (!line) return 0;
+	if (!line) return false;
 
-	if (line[0] == DM_INI_COMMENT_1 || line[0] == DM_INI_COMMENT_2) return 1;
+	if (line[0] == DM_INI_COMMENT_1 || line[0] == DM_INI_COMMENT_2) return true;
 
-	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_3) return 1;
+	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_3) return true;
 
-	return 0;
+	return false;
+}
+
+bool __IniFile_IsBeginBlockComment(const char * line)
+{
+	return false;
+}
+
+bool __IniFile_IsEndBlockComment(const char * line)
+{
+	return false;
 }
