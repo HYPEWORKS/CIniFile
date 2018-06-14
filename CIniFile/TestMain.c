@@ -113,6 +113,21 @@ int TestFileRead()
 
 	fclose(testFile);
 
+	IniFile_ReadFile("test.ini");
+
+	return TEST_SUCCESS;
+}
+
+int TestComments()
+{
+	const char* comment1 = "// wow";
+	const char* comment2 = "# such";
+	const char* comment3 = "; test";
+	const char* comment4 = "/*  so";
+	const char* comment5 = "much */";
+
+	ASSERT_TRUE(__IniFile_IsLineCommented(comment1));
+
 	return TEST_SUCCESS;
 }
 
@@ -143,6 +158,7 @@ int main(int argc, char* argv[])
 	RegisterTest(TestErrorHint, "Error Hint Functionality");
 	RegisterTest(TestFileRead, "File Reading Functionality");
 	RegisterTest(TestHashing, "String Hashing Functionality");
+	RegisterTest(TestComments, "Comment Parsing Functionality");
 
 	return 0;
 }

@@ -29,14 +29,12 @@
 // you always have to keep track of these buggers.
 #define DM_INI_COMMENT_2 ';'
 
-// One-half of "//"
+// One-half of "//" or beginning or ending half of a block.
 #define DM_INI_COMMENT_3 '/'
 
-// Beginning of a block
-#define DM_INI_COMMENT_4A "/*"
+// Segment of a block comment.
+#define DM_INI_COMMENT_4 '*'
 
-// Ending of a block
-#define DM_INI_COMMENT_4B "*/"
 
 #define DM_INI_ERROR_MESSAGE_FOPEN_FAIL "Can't open file for reading. Please check errno"
 #define DM_INI_ERROR_MESSAGE_MALLOC_FAIL "Couldn't allocate memory! This is bad."

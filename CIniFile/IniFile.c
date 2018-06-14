@@ -162,15 +162,23 @@ void IniSection_Free(IniSection* section)
 IniFile* IniFile_ReadFile(const char* filename)
 {
 	FILE* fp = NULL;
-	char* buffer;
+	char* buffer = NULL;
 
 	__IniFile_ClearErrorHint();
+
+	buffer = malloc(sizeof(char) * DM_INI_MAX_LINE_BUFFER);
+
+	if (!buffer) {
+		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_MALLOC_FAIL, 7);
+	}
 
 	fp = fopen(filename, "r");
 
 	if (!fp)
 	{
 		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_FOPEN_FAIL, errno);
+
+		free(buffer);
 
 		fclose(fp);
 
@@ -179,8 +187,10 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 	while (fgets(buffer, DM_INI_MAX_LINE_BUFFER, fp))
 	{
-
+		printf(buffer);
 	}
+
+	free(buffer);
 
 	fclose(fp);
 
@@ -222,11 +232,21 @@ bool __IniFile_ReadLine(const char* line, IniItem* item, IniItem* section)
 
 bool __IniFile_IsLineCommented(const char* line)
 {
-	if (!line) return false;
+	if (!line)
+		return false;
 
-	if (line[0] == DM_INI_COMMENT_1 || line[0] == DM_INI_COMMENT_2) return true;
+	// For simplicity's sake, we consider a blank line a comment.
+	if (line[0] == '\n')
+		return true;
 
-	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_3) return true;
+	if (line[0] == DM_INI_COMMENT_1 || line[0] == DM_INI_COMMENT_2)
+		return true;
+
+	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_3)
+		return true;
+
+	if (line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_4)
+		return true;
 
 	return false;
 }
