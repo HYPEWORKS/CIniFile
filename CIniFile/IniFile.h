@@ -5,7 +5,7 @@
  * CIniFile: C implementation of reading ini configuration files.
  * An open source project of The DigitalMagic Company.
  *
- * Copyright (C) 2017 DigitalMagic LLC.
+ * Copyright (C) 2017-2018 DigitalMagic LLC.
  */
 
 /*

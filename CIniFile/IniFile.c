@@ -5,7 +5,7 @@
  * CIniFile: C implementation of reading ini configuration files.
  * An open source project of The DigitalMagic Company.
  *
- * Copyright (C) 2017 DigitalMagic LLC.
+ * Copyright (C) 2017-2018 DigitalMagic LLC.
  */
 
 /*
@@ -168,7 +168,8 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 	buffer = malloc(sizeof(char) * DM_INI_MAX_LINE_BUFFER);
 
-	if (!buffer) {
+	if (!buffer)
+	{
 		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_MALLOC_FAIL, 7);
 	}
 
@@ -251,12 +252,19 @@ bool __IniFile_IsLineCommented(const char* line)
 	return false;
 }
 
-bool __IniFile_IsBeginBlockComment(const char * line)
+bool __IniFile_IsBeginBlockComment(const char* line)
 {
-	return false;
+	return (line && line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_4);
 }
 
-bool __IniFile_IsEndBlockComment(const char * line)
+bool __IniFile_IsEndBlockComment(const char* line)
 {
-	return false;
+	size_t len = 0;
+
+	if (!line)
+		return false;
+	
+	len = strlen(line) - 1;
+
+	return (line[len - 1] == DM_INI_COMMENT_4 && line[len] == DM_INI_COMMENT_3);
 }

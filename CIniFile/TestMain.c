@@ -5,7 +5,7 @@
  * CIniFile: C implementation of reading ini configuration files.
  * An open source project of The DigitalMagic Company.
  *
- * Copyright (C) 2017 DigitalMagic LLC.
+ * Copyright (C) 2017-2018 DigitalMagic LLC.
  */
 
 /*
@@ -125,8 +125,16 @@ int TestComments()
 	const char* comment3 = "; test";
 	const char* comment4 = "/*  so";
 	const char* comment5 = "much */";
+	const char* comment6 = "/* test test test wow */";
 
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment1));
+	ASSERT_TRUE(__IniFile_IsLineCommented(comment2));
+	ASSERT_TRUE(__IniFile_IsLineCommented(comment3));
+	ASSERT_TRUE(__IniFile_IsLineCommented(comment4));
+	ASSERT_FALSE(__IniFile_IsLineCommented(comment5));
+
+	ASSERT_TRUE(__IniFile_IsBeginBlockComment(comment4));
+	ASSERT_TRUE(__IniFile_IsEndBlockComment(comment5));
 
 	return TEST_SUCCESS;
 }
@@ -148,7 +156,6 @@ void RegisterTest(TestFunction tf, const char* title)
 
 	printf("\n");
 }
-
 
 /* Our entry point. */
 int main(int argc, char* argv[])
