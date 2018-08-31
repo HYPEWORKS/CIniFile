@@ -35,9 +35,14 @@
 // Segment of a block comment.
 #define DM_INI_COMMENT_4 '*'
 
+// [
+#define DM_LEFT_BRACKET '['
 
-#define DM_INI_ERROR_MESSAGE_FOPEN_FAIL "Can't open file for reading. Please check errno"
-#define DM_INI_ERROR_MESSAGE_MALLOC_FAIL "Couldn't allocate memory! This is bad."
+// ]
+#define DM_RIGHT_BRACKET ']'
+
+#define DM_INI_ERROR_MESSAGE_FOPEN_FAIL "File open failed! Check errno"
+#define DM_INI_ERROR_MESSAGE_MALLOC_FAIL "malloc failed! Check errno"
 
 /**
  * @brief A helping hand if/when you get errors.
@@ -159,5 +164,8 @@ bool __IniFile_IsBeginBlockComment(const char* line);
 bool __IniFile_IsEndBlockComment(const char* line);
 
 // TODO: Functions for section and implement the file structure and functions.
+
+bool __IniFile_IsSectionDeclaration(const char* line);
+char* __IniFile_GetSectionName(const char* line);
 
 #endif

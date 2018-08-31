@@ -27,15 +27,10 @@
 #if _MSC_VER
 #include <intrin.h>
 #define BREAKPOINT() __debugbreak()
-#elif
+#else
 #include <signal.h>
 #define BREAKPOINT() raise(SIGINT);
-#else
-// TODO: Put your own stuff here for internal breakpoint handling.
-#define BREAKPOINT()
 #endif
-#elif
-#define BREAKPOINT()
 #endif
 
 #ifndef __FUNCSIG__
@@ -60,26 +55,6 @@
 #define ASSERT_STR_NOT_EQUALS(x, y) if (strcmp(x, y) == 0) { ASSERT() }
 
 typedef int(*TestFunction)();
-
-int TestHashing()
-{
-	const char* test1 = "hello world";
-	long hashed1 = __IniFile_Hash(test1);
-
-	const char* test2 = "Josh is really cool, and this is just some filler to create a very long string!";
-	long hashed2 = __IniFile_Hash(test2);
-
-	const char* test3 = "a";
-	long hashed3 = __IniFile_Hash(test3);
-
-	ASSERT_NOT_EQUALS(hashed1, 0);
-
-	ASSERT_NOT_EQUALS(hashed2, 0);
-
-	ASSERT_EQUALS(hashed3, 276);
-
-	return TEST_SUCCESS;
-}
 
 int TestErrorHint()
 {
@@ -113,7 +88,29 @@ int TestFileRead()
 
 	fclose(testFile);
 
-	IniFile_ReadFile("test.ini");
+	IniFile* fileData = IniFile_ReadFile("test.ini");
+
+	IniFile_Free(fileData);
+
+	return TEST_SUCCESS;
+}
+
+int TestHashing()
+{
+	const char* test1 = "hello world";
+	long hashed1 = __IniFile_Hash(test1);
+
+	const char* test2 = "Josh is really cool, and this is just some filler to create a very long string!";
+	long hashed2 = __IniFile_Hash(test2);
+
+	const char* test3 = "a";
+	long hashed3 = __IniFile_Hash(test3);
+
+	ASSERT_NOT_EQUALS(hashed1, 0);
+
+	ASSERT_NOT_EQUALS(hashed2, 0);
+
+	ASSERT_EQUALS(hashed3, 276);
 
 	return TEST_SUCCESS;
 }
@@ -132,9 +129,27 @@ int TestComments()
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment3));
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment4));
 	ASSERT_FALSE(__IniFile_IsLineCommented(comment5));
+	ASSERT_TRUE(__IniFile_IsLineCommented(comment6));
 
 	ASSERT_TRUE(__IniFile_IsBeginBlockComment(comment4));
 	ASSERT_TRUE(__IniFile_IsEndBlockComment(comment5));
+
+	ASSERT_TRUE(__IniFile_IsBeginBlockComment(comment6));
+	ASSERT_TRUE(__IniFile_IsEndBlockComment(comment6));
+
+	return TEST_SUCCESS;
+}
+
+int TestSection()
+{
+	const char* section1 = "[section1]";
+
+	ASSERT_TRUE(__IniFile_IsSectionDeclaration(section1));
+
+	char* section1_eval = __IniFile_GetSectionName(section1);
+
+	ASSERT_NOT_NULL(section1_eval);
+	ASSERT_STR_EQUALS(section1_eval, "section1");
 
 	return TEST_SUCCESS;
 }
@@ -166,6 +181,7 @@ int main(int argc, char* argv[])
 	RegisterTest(TestFileRead, "File Reading Functionality");
 	RegisterTest(TestHashing, "String Hashing Functionality");
 	RegisterTest(TestComments, "Comment Parsing Functionality");
+	RegisterTest(TestSection, "Section Parsing Functionality");
 
 	return 0;
 }

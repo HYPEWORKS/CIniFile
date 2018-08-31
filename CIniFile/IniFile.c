@@ -188,7 +188,7 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 	while (fgets(buffer, DM_INI_MAX_LINE_BUFFER, fp))
 	{
-		printf(buffer);
+		//printf(buffer);
 	}
 
 	free(buffer);
@@ -267,4 +267,31 @@ bool __IniFile_IsEndBlockComment(const char* line)
 	len = strlen(line) - 1;
 
 	return (line[len - 1] == DM_INI_COMMENT_4 && line[len] == DM_INI_COMMENT_3);
+}
+
+bool __IniFile_IsSectionDeclaration(const char* line)
+{
+	size_t len = 0;
+
+	if (!line)
+		return false;
+
+	len = strlen(line) - 1;
+
+	return (line[0] == DM_LEFT_BRACKET && line[len] == DM_RIGHT_BRACKET);
+}
+
+char* __IniFile_GetSectionName(const char* line)
+{
+	size_t len = 0;
+
+	if (!line)
+		return false;
+
+	len = strlen(line) - 1;
+
+	if (!(line[0] == DM_LEFT_BRACKET && line[len] == DM_RIGHT_BRACKET))
+		return NULL;
+
+	return substring(line, 1, len - 1);
 }
