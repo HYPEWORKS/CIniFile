@@ -9,10 +9,9 @@
  */
 
 /*
- * This software library is licensed under the University of Illinois/NCSA Open
- * Source License.
+ * This software library is open source and licensed under the MIT License.
  *
- * Read LICENSE.TXT for the full license text.
+ * Read LICENSE for the full license text.
  */
 
 #define TEST_CODE
@@ -40,7 +39,8 @@
 #define TEST_SUCCESS 0
 #define TEST_FAIL 1
 
-#define ASSERT() printf("Assertion failure in method %s on line %d\n", __FUNCSIG__, __LINE__); BREAKPOINT(); return TEST_FAIL;
+#define ASSERT() printf("Assertion failure in method %s on line %d\n", \
+	__FUNCSIG__, __LINE__); BREAKPOINT(); return TEST_FAIL;
 
 #define ASSERT_TRUE(x) if (x != true) { ASSERT() }
 #define ASSERT_FALSE(x) if (x != false) { ASSERT() }

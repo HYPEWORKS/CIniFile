@@ -9,10 +9,9 @@
  */
 
 /*
- * This software library is licensed under the University of Illinois/NCSA Open
- * Source License.
+ * This software library is open source and licensed under the MIT License.
  *
- * Read LICENSE.TXT for the full license text.
+ * Read LICENSE for the full license text.
  */
 
 #include "IniFile.h"
@@ -47,18 +46,49 @@ char* strndup(const char* s, size_t n)
 }
 #endif
 
-char* substring(const char* str, size_t begin, size_t len)
+char* strndup_optimized(const char* s, size_t n, size_t len)
 {
-	if (str == 0 || strlen(str) == 0 || strlen(str) < begin || 
-		strlen(str) < (begin + len))
+	char* result;
+
+	if (n < len)
+		len = n;
+
+	result = (char*)malloc(len + 1);
+	if (!result)
 		return 0;
 
-	return strndup(str + begin, len);
+	result[len] = '\0';
+	return (char*)memcpy(result, s, len);
+}
+
+char* substring(const char* str, size_t begin, size_t len)
+{
+	size_t origLen = strlen(str);
+
+	if (str == 0 || origLen  == 0 || origLen < begin ||
+		origLen < (begin + len))
+		return 0;
+
+	return strndup_optimized(str + begin, len, origLen);
+}
+
+char* substring_optimized(const char* str, size_t begin, size_t len, size_t origLen)
+{
+	if (str == 0 || origLen == 0 || origLen < begin ||
+		origLen < (begin + len))
+		return 0;
+
+	return strndup_optimized(str + begin, len, origLen);
 }
 
 bool startsWith(const char* str, const char* search)
 {
 	return (strncmp(str, search, strlen(search)) == 0);
+}
+
+bool startsWith_optimized(const char* str, const char* search, size_t len)
+{
+	return (strncmp(str, search, len) == 0);
 }
 
 /* Error handling code */

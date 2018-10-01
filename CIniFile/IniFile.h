@@ -9,10 +9,9 @@
  */
 
 /*
- * This software library is licensed under the University of Illinois/NCSA Open
- * Source License.
+ * This software library is open source and licensed under the MIT License.
  *
- * Read LICENSE.TXT for the full license text.
+ * Read LICENSE for the full license text.
  */
 
 #include <stdbool.h>

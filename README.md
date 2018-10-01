@@ -1,41 +1,18 @@
 # CIniFile
-Ini file parser written in C
+Ini file parser written in C.
 
-Documentation coming soon
+Only tested with Visual Studio 2017 but should theoretically work with Clang and GCC.
+
+Documentation coming soon, but self documenting code amiright???
 
 ## License
 
-University of Illinois/NCSA Open Source License
+MIT License
 
-Copyright (c) 2017-2018 DigitalMagic LLC.
-All rights reserved.
+Copyright 2017-2018 DigitalMagic LLC.
 
-Developed by: 	Josh Kennedy
-                The DigitalMagic Company
-                https://www.digitalmagic.io
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal with
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do 
-so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Redistributions of source code must retain the above copyright notice, this 
-list of conditions and the following disclaimers.
-
-Redistributions in binary form must reproduce the above copyright notice, this
-list of conditions and the following disclaimers in the documentation and/or
-other materials provided with the distribution.
-
-Neither the names of <Name of Development Group, Name of Institution>, nor the
-names of its contributors may be used to endorse or promote products derived
-from this Software without specific prior written permission.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
-SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
