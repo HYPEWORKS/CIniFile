@@ -72,7 +72,8 @@ char* substring(const char* str, size_t begin, size_t len)
 	return strndup_optimized(str + begin, len, origLen);
 }
 
-char* substring_optimized(const char* str, size_t begin, size_t len, size_t origLen)
+char* substring_optimized(const char* str, size_t begin, size_t len,
+	size_t origLen)
 {
 	if (str == 0 || origLen == 0 || origLen < begin ||
 		origLen < (begin + len))
@@ -97,6 +98,7 @@ void __IniFile_SetErrorHint(const char* message, int code)
 {
 	if (!__IniFile_ErrorHint)
 	{
+		// TODO: What do if we get here from a malloc error?!
 		__IniFile_ErrorHint = (IniErrorHint*)malloc(sizeof(IniErrorHint));
 	}
 
@@ -284,7 +286,8 @@ bool __IniFile_IsLineCommented(const char* line)
 
 bool __IniFile_IsBeginBlockComment(const char* line)
 {
-	return (line && line[0] == DM_INI_COMMENT_3 && line[1] == DM_INI_COMMENT_4);
+	return (line && line[0] == DM_INI_COMMENT_3 &&
+		line[1] == DM_INI_COMMENT_4);
 }
 
 bool __IniFile_IsEndBlockComment(const char* line)

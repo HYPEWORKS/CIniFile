@@ -30,6 +30,8 @@
 #include <signal.h>
 #define BREAKPOINT() raise(SIGINT);
 #endif
+#else
+#define BREAKPOINT() (void)0
 #endif
 
 #ifndef __FUNCSIG__
@@ -90,6 +92,8 @@ int TestFileRead()
 
 	IniFile* fileData = IniFile_ReadFile("test.ini");
 
+	ASSERT_NOT_NULL(fileData);
+
 	IniFile_Free(fileData);
 
 	return TEST_SUCCESS;
@@ -100,7 +104,7 @@ int TestHashing()
 	const char* test1 = "hello world";
 	long hashed1 = __IniFile_Hash(test1);
 
-	const char* test2 = "Josh is really cool, and this is just some filler to create a very long string!";
+	const char* test2 = "Josh is very cool and this is just some long string!";
 	long hashed2 = __IniFile_Hash(test2);
 
 	const char* test3 = "a";

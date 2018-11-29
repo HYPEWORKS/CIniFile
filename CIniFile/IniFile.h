@@ -19,7 +19,8 @@
 #ifndef DM_INI_FILE_H_
 #define DM_INI_FILE_H_
 
-// Max buffer size for each line. Can be modified for the needs of the application.
+// Max buffer size for each line.
+// Can be modified for the needs of the application.
 #define DM_INI_MAX_LINE_BUFFER 2048
 
 // hashtag swag y'all
@@ -28,7 +29,7 @@
 // you always have to keep track of these buggers.
 #define DM_INI_COMMENT_2 ';'
 
-// One-half of "//" or beginning or ending half of a block.
+// One-half of "//" or beginning or ending half of a block comment.
 #define DM_INI_COMMENT_3 '/'
 
 // Segment of a block comment.
