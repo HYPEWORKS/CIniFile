@@ -92,7 +92,7 @@ int TestFileRead()
 
 	IniFile* fileData = IniFile_ReadFile("test.ini");
 
-	ASSERT_NOT_NULL(fileData);
+	ASSERT_NULL(fileData);
 
 	IniFile_Free(fileData);
 
@@ -110,11 +110,16 @@ int TestHashing()
 	const char* test3 = "a";
 	long hashed3 = __IniFile_Hash(test3);
 
+	const char* test4 = "ab";
+	long hashed4 = __IniFile_Hash(test4);
+
 	ASSERT_NOT_EQUALS(hashed1, 0);
 
 	ASSERT_NOT_EQUALS(hashed2, 0);
 
 	ASSERT_EQUALS(hashed3, 276);
+
+	ASSERT_EQUALS(hashed4, 49502);
 
 	return TEST_SUCCESS;
 }
