@@ -5,7 +5,7 @@
  * CIniFile: C implementation of reading ini configuration files.
  * An open source project of The DigitalMagic Company.
  *
- * Copyright (C) 2017-2018 DigitalMagic LLC.
+ * Copyright (C) 2017-2019 DigitalMagic LLC.
  */
 
 /*
@@ -16,11 +16,14 @@
 
 #include "IniFile.h"
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <search.h>
 #include <stdbool.h>
+#include <errno.h>
+#include <stdint.h>
 
 #define HASH_SIZE 8675309
 
@@ -82,6 +85,72 @@ char* substring_optimized(const char* str, size_t begin, size_t len,
 	return strndup_optimized(str + begin, len, origLen);
 }
 
+#ifndef __GNUC__
+/* The original code is public domain -- Will Hartung 4/9/09 */
+/* Modifications, public domain as well, by Antti Haapala, 11/10/17 */
+
+// if typedef doesn't exist (msvc, blah)
+typedef intptr_t ssize_t;
+
+ssize_t getline(char** lineptr, size_t* n, FILE* stream)
+{
+	size_t pos;
+	int c;
+
+	if (lineptr == NULL || stream == NULL || n == NULL)
+	{
+		errno = EINVAL;
+		return -1;
+	}
+
+	c = fgetc(stream);
+	if (c == EOF)
+	{
+		return -1;
+	}
+
+	if (*lineptr == NULL)
+	{
+		*lineptr = malloc(128);
+		if (*lineptr == NULL)
+		{
+			return -1;
+		}
+		*n = 128;
+	}
+
+	pos = 0;
+	while (c != EOF)
+	{
+		if (pos + 1 >= *n)
+		{
+			size_t new_size = *n + (*n >> 2);
+			if (new_size < 128)
+			{
+				new_size = 128;
+			}
+			char* new_ptr = realloc(*lineptr, new_size);
+			if (new_ptr == NULL)
+			{
+				return -1;
+			}
+			*n = new_size;
+			*lineptr = new_ptr;
+		}
+
+		((unsigned char*)(*lineptr))[pos++] = c;
+		if (c == '\n')
+		{
+			break;
+		}
+		c = fgetc(stream);
+	}
+
+	(*lineptr)[pos] = '\0';
+	return pos;
+}
+#endif
+
 bool startsWith(const char* str, const char* search)
 {
 	return (strncmp(str, search, strlen(search)) == 0);
@@ -102,8 +171,11 @@ void __IniFile_SetErrorHint(const char* message, int code)
 		__IniFile_ErrorHint = (IniErrorHint*)malloc(sizeof(IniErrorHint));
 	}
 
-	__IniFile_ErrorHint->errorText = message;
-	__IniFile_ErrorHint->errorCode = code;
+	if (__IniFile_ErrorHint)
+	{
+		__IniFile_ErrorHint->errorText = message;
+		__IniFile_ErrorHint->errorCode = code;
+	}
 }
 
 void __IniFile_ClearErrorHint()
@@ -195,6 +267,7 @@ IniFile* IniFile_ReadFile(const char* filename)
 {
 	FILE* fp = NULL;
 	char* buffer = NULL;
+	size_t lineLength = 0;
 
 	__IniFile_ClearErrorHint();
 
@@ -213,12 +286,10 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 		free(buffer);
 
-		fclose(fp);
-
 		return NULL;
 	}
 
-	while (fgets(buffer, DM_INI_MAX_LINE_BUFFER, fp))
+	while (getline(&buffer, &lineLength, fp))
 	{
 		//printf(buffer);
 	}
