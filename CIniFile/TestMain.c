@@ -3,9 +3,9 @@
  * Created by Josh Kennedy on 13 July 2017
  *
  * CIniFile: C implementation of reading ini configuration files.
- * An open source project of The DigitalMagic Company.
+ * An open source project of HYPEWORKS.
  *
- * Copyright (C) 2017-2019 DigitalMagic LLC.
+ * Copyright (C) 2017-2021 HYPEWORKS Ltd Co.
  */
 
 /*
@@ -130,14 +130,17 @@ int TestComments()
 	const char* comment2 = "# such";
 	const char* comment3 = "; test";
 	const char* comment4 = "/*  so";
+	const char* comment4_5 = "very comment";
 	const char* comment5 = "much */";
 	const char* comment6 = "/* test test test wow */";
+	const char* blankLine = "\n";
 
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment1));
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment2));
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment3));
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment4));
 	ASSERT_FALSE(__IniFile_IsLineCommented(comment5));
+	ASSERT_FALSE(__IniFile_IsLineCommented(comment4_5));
 	ASSERT_TRUE(__IniFile_IsLineCommented(comment6));
 
 	ASSERT_TRUE(__IniFile_IsBeginBlockComment(comment4));
@@ -145,6 +148,8 @@ int TestComments()
 
 	ASSERT_TRUE(__IniFile_IsBeginBlockComment(comment6));
 	ASSERT_TRUE(__IniFile_IsEndBlockComment(comment6));
+
+	ASSERT_TRUE(__IniFile_IsLineCommented(blankLine));
 
 	return TEST_SUCCESS;
 }

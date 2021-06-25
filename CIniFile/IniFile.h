@@ -3,9 +3,9 @@
  * Created by Josh Kennedy on 12 July 2017
  *
  * CIniFile: C implementation of reading ini configuration files.
- * An open source project of The DigitalMagic Company.
+ * An open source project of HYPEWORKS.
  *
- * Copyright (C) 2017-2019 DigitalMagic LLC.
+ * Copyright (C) 2017-2021 HYPEWORKS Ltd Co.
  */
 
 /*
@@ -16,8 +16,8 @@
 
 #include <stdbool.h>
 
-#ifndef DM_INI_FILE_H_
-#define DM_INI_FILE_H_
+#ifndef HYPE_INI_FILE_H_
+#define HYPE_INI_FILE_H_
 
 // Max buffer size for each line.
 // Can be modified for the needs of the application.
@@ -58,6 +58,7 @@ typedef struct
 	int errorCode;
 } IniErrorHint;
 
+static bool __IniFile_GlobalCommentState = false;
 static IniErrorHint* __IniFile_ErrorHint;
 
 void __IniFile_SetErrorHint(const char* message, int code);
@@ -163,9 +164,9 @@ bool __IniFile_IsBeginBlockComment(const char* line);
 
 bool __IniFile_IsEndBlockComment(const char* line);
 
-// TODO: Functions for section and implement the file structure and functions.
+/* TODO: Functions for section and implement the file structureand functions. */
 
 bool __IniFile_IsSectionDeclaration(const char* line);
 char* __IniFile_GetSectionName(const char* line);
 
-#endif
+#endif // HYPE_INI_FILE_H_

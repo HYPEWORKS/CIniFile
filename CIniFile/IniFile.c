@@ -3,16 +3,16 @@
  * Created by Josh Kennedy on 13 July 2017
  *
  * CIniFile: C implementation of reading ini configuration files.
- * An open source project of The DigitalMagic Company.
+ * An open source project of HYPEWORKS.
  *
- * Copyright (C) 2017-2019 DigitalMagic LLC.
+ * Copyright (C) 2017-2021 HYPEWORKS Ltd Co.
  */
 
-/*
- * This software library is open source and licensed under the MIT License.
- *
- * Read LICENSE for the full license text.
- */
+ /*
+  * This software library is open source and licensed under the MIT License.
+  *
+  * Read LICENSE for the full license text.
+  */
 
 #include "IniFile.h"
 
@@ -68,7 +68,7 @@ char* substring(const char* str, size_t begin, size_t len)
 {
 	size_t origLen = strlen(str);
 
-	if (str == 0 || origLen  == 0 || origLen < begin ||
+	if (str == 0 || origLen == 0 || origLen < begin ||
 		origLen < (begin + len))
 		return 0;
 
@@ -86,10 +86,12 @@ char* substring_optimized(const char* str, size_t begin, size_t len,
 }
 
 #ifndef __GNUC__
+/* https://github.com/ChristopherWilks/megadepth/blob/master/getline.c */
 /* The original code is public domain -- Will Hartung 4/9/09 */
-/* Modifications, public domain as well, by Antti Haapala, 11/10/17 */
+/* Modifications, public domain as well, by Antti Haapala, 11/10/17
+   - Switched to getc on 5/23/19 */
 
-// if typedef doesn't exist (msvc, blah)
+/* if typedef doesn't exist (msvc, blah) */
 typedef intptr_t ssize_t;
 
 ssize_t getline(char** lineptr, size_t* n, FILE* stream)
@@ -103,7 +105,7 @@ ssize_t getline(char** lineptr, size_t* n, FILE* stream)
 		return -1;
 	}
 
-	c = fgetc(stream);
+	c = getc(stream);
 	if (c == EOF)
 	{
 		return -1;
@@ -143,7 +145,7 @@ ssize_t getline(char** lineptr, size_t* n, FILE* stream)
 		{
 			break;
 		}
-		c = fgetc(stream);
+		c = getc(stream);
 	}
 
 	(*lineptr)[pos] = '\0';
@@ -241,7 +243,7 @@ IniSection* IniSection_Initialize()
 	{
 		__IniFile_SetErrorHint(DM_INI_ERROR_MESSAGE_MALLOC_FAIL, 6);
 	}
-	
+
 	return section;
 }
 
@@ -289,7 +291,7 @@ IniFile* IniFile_ReadFile(const char* filename)
 		return NULL;
 	}
 
-	while (getline(&buffer, &lineLength, fp))
+	while (getline(&buffer, &lineLength, fp) != -1)
 	{
 		//printf(buffer);
 	}
@@ -367,7 +369,7 @@ bool __IniFile_IsEndBlockComment(const char* line)
 
 	if (!line)
 		return false;
-	
+
 	len = strlen(line) - 1;
 
 	return (line[len - 1] == DM_INI_COMMENT_4 && line[len] == DM_INI_COMMENT_3);
