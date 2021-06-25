@@ -82,7 +82,7 @@ int TestErrorHint()
 
 int TestFileRead()
 {
-	// A bit of a sanity check.
+	/* A bit of a sanity check. */
 	FILE* testFile = NULL;
 	testFile = fopen("test.ini", "r");
 

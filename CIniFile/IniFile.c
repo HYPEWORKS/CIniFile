@@ -8,11 +8,11 @@
  * Copyright (C) 2017-2021 HYPEWORKS Ltd Co.
  */
 
- /*
-  * This software library is open source and licensed under the MIT License.
-  *
-  * Read LICENSE for the full license text.
-  */
+/*
+ * This software library is open source and licensed under the MIT License.
+ *
+ * Read LICENSE for the full license text.
+ */
 
 #include "IniFile.h"
 
@@ -169,7 +169,7 @@ void __IniFile_SetErrorHint(const char* message, int code)
 {
 	if (!__IniFile_ErrorHint)
 	{
-		// TODO: What do if we get here from a malloc error?!
+		/* TODO: What do if we get here from a malloc error ?! */
 		__IniFile_ErrorHint = (IniErrorHint*)malloc(sizeof(IniErrorHint));
 	}
 
@@ -293,7 +293,7 @@ IniFile* IniFile_ReadFile(const char* filename)
 
 	while (getline(&buffer, &lineLength, fp) != -1)
 	{
-		//printf(buffer);
+		/*printf(buffer);*/
 	}
 
 	free(buffer);
@@ -341,7 +341,7 @@ bool __IniFile_IsLineCommented(const char* line)
 	if (!line)
 		return false;
 
-	// For simplicity's sake, we consider a blank line a comment.
+	/* For simplicity's sake, we consider a blank line a comment. */
 	if (line[0] == '\n')
 		return true;
 
